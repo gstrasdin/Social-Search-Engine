@@ -1,0 +1,87 @@
+﻿@{
+    ViewData["Title"] = "Search";
+}
+
+@model Social.SearchEngine.Models.SearchViewModel
+
+<style>
+	h1 {
+		margin: 1em 0;
+	}
+	.search {
+		display: flex;
+		flex-flow: row nowrap;
+		gap: 2em;
+		width: 100%;
+	}
+	.search > input[type="text"] {
+		font-size: 1.5em;
+	}
+	.search > button {
+		width: 6em;
+		font-size: 1.5em;
+	}
+	.social {
+		margin: 3em 0;
+	}
+	.social > h2 {
+		text-align: left;
+	}
+	.social > div {
+		display: grid;
+		grid-template-columns: 1fr 1fr;
+		gap: .5em;
+	}
+</style>
+<script>
+	window.onload(e => {
+		var input = document.querySelector("input[type='text']");
+		input.onkeypress = e => {
+			e = e || window.event;
+			if (e.keyCode === 13) {
+				form.submit();
+				return false;
+			}
+		}
+	});
+</script>
+
+<div class="text-center">
+	<h1>Social Search Engine</h1>
+	<form asp-controller="Home" asp-action="Index">
+		<div class="form-group search text-center">
+			<input id="text" type="text" name="text" class="form-control" autofocus="autofocus"/>
+			<button type="submit" class="btn btn-primary form-control">Search</button>
+		</div>
+	</form>
+
+	<div id="twitter" class="social">
+		<h2>Twitter</h2>
+		@if (Model.Tweets.Count == 0 && Model.SearchText == String.Empty)
+		{
+			<span>No Twitter posts found</span>
+		}
+		else if (Model.Tweets.Count == 0)
+		{
+			<span>No Twitter posts found for @Model.SearchText</span>
+		} 
+		<div>
+			@foreach (var tweet in Model.Tweets)
+				{
+					<div>
+						@Html.Raw(tweet)
+					</div>
+				}
+		</div>
+	</div>
+
+	<div id="instagram" class="social">
+		<h2>Instagram</h2>
+		<span>No Instagram posts found</span>
+	</div>
+
+	<div id="facebook" class="social">
+		<h2>Facebook</h2>
+		<span>No Facebook posts found</span>
+	</div>
+</div>
